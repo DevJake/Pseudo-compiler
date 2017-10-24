@@ -1,0 +1,13 @@
+feed:
+- pseudo: Pseudo1
+  pseudoComment: PseudoComment1
+  devComment: DevComment1
+  ignore: false
+- pseudo: Pseudo2
+  pseudoComment: PseudoComment2
+  devComment: DevComment2
+  ignore: false
+- pseudo: Pseudo2
+  pseudoComment: PseudoComment2
+  devComment: DevComment2
+  ignore: true

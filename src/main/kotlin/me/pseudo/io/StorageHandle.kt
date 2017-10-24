@@ -16,6 +16,40 @@
 
 package me.pseudo.io
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
+import me.pseudo.Main
+import me.pseudo.entities.ParsedPseudoReader
+import me.pseudo.entities.PseudoReader
+import me.pseudo.entities.Reader
+import java.io.File
+
+
 object StorageHandle {
+    val sdir = File(File(Main::class.java.protectionDomain.codeSource.location.toURI()).parentFile, "Resources")
+    private val pseudo = PseudoReader()
+    private val parsedPseudo = ParsedPseudoReader()
+    val pseudoExtension = ".pseudo"
+    val parsedPseudoExtension = ".ppseudo"
+    val mapper =
+            ObjectMapper(YAMLFactory()
+                    .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES)
+                    .enable(YAMLGenerator.Feature.LITERAL_BLOCK_STYLE)
+                    .enable(YAMLGenerator.Feature.SPLIT_LINES)
+                    .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
+                    .setSerializationInclusion(JsonInclude.Include.NON_ABSENT)
+
+    fun getByType(type: ReaderType): Reader = when (type) {
+        ReaderType.PSEUDO -> pseudo
+        ReaderType.PARSED_PSEUDO -> parsedPseudo
+    }
+
     //TODO add read/write/append for .pseudo and .ppseudo
+}
+
+enum class ReaderType {
+    PSEUDO,
+    PARSED_PSEUDO;
 }

@@ -18,18 +18,19 @@ package me.pseudo.entities
 
 import me.pseudo.exception.LineFeedReadException
 
-data class LineFeed(val feed: List<Line>) {
+class LineFeed(var feed: List<Line>?) {
     private var currentLine = 0
+
     fun nextLine() {
         if (!hasNextLine())
-            throw LineFeedReadException("No more lines exist within this feed! Feed size=${feed.size}, currentLine=$currentLine")
+            throw LineFeedReadException("No more lines exist within this feed! Feed size=${feed?.size}, currentLine=$currentLine")
         else {
-            feed.get(currentLine)
+            feed?.get(currentLine)
             currentLine++
         }
     }
 
-    fun hasNextLine(): Boolean = currentLine + 1 < feed.size
+    fun hasNextLine(): Boolean = (currentLine + 1) < feed?.size ?: currentLine + 2
 }
 
 class LineFeedBuilder() {
@@ -42,7 +43,7 @@ class LineFeedBuilder() {
 
 data class Line(val pseudo: String, val pseudoComment: String?, val devComment: String?, val ignore: Boolean = false)
 
-class LineBuilder(private val pseudo: String){
+class LineBuilder(private val pseudo: String) {
     private var pseudoComment: String? = null
     private var devComment: String? = null
     private var ignore: Boolean = false

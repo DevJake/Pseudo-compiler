@@ -17,3 +17,5 @@
 package me.pseudo.exception
 
 class LineFeedReadException(message: String? = null) : RuntimeException(message)
+class FileReadException(message: String? = null) : RuntimeException(message)
+

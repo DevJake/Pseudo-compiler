@@ -22,7 +22,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import me.pseudo.entities.Line
 import me.pseudo.entities.LineFeedBuilder
-import java.io.File
+import me.pseudo.io.ReaderType
+import me.pseudo.io.StorageHandle
 
 object Main {
     @JvmStatic
@@ -34,14 +35,14 @@ object Main {
                 .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
                 .setSerializationInclusion(JsonInclude.Include.NON_ABSENT)
 
-        val sdir = File(File(Main::class.java.protectionDomain.codeSource.location.toURI()).parentFile, "Resources")
-        mapper.writeValue(File(sdir, "ExampleFeed.ppseudo"),
+        StorageHandle.getByType(ReaderType.PARSED_PSEUDO).write("ExampleFeed",
                 LineFeedBuilder()
                         .addLine(Line("Pseudo1", "PseudoComment1", "DevComment1"))
                         .addLine(Line("Pseudo2", "PseudoComment2", "DevComment2"))
                         .addLine(Line("Pseudo2", "PseudoComment2", "DevComment2", true))
-                        .build()
-        )
+                        .build())
+
+        println(StorageHandle.getByType(ReaderType.PARSED_PSEUDO).read("ExampleFeed").feed.toString())
     }
 }
 
